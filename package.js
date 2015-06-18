@@ -11,7 +11,10 @@ Package.registerBuildPlugin({
   use: [],
   sources: [
     'wrap-p5.js'
-  ]
+  ],
+    npmDependencies: {
+        esprima: "latest"
+    }
 });
 
 // Npm.depends({
