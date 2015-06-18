@@ -5,10 +5,6 @@ var wrapP5 = function (compileStep) {
   // get file contents
   var fileContents = compileStep.read().toString('utf8');
 
-  // ... do the compilation using a markdown library
-  // ... generate JS code with Blaze
-    // ... generate a path for the new JS file from compileStep.inputPath
-
     var lines = fileContents.split('\n');
     var output = []
     lines.forEach(function(line) {
@@ -41,14 +37,6 @@ var wrapP5 = function (compileStep) {
    
     console.log(code);
 
-    
-
-  // add newly compiled JavaScript code to the app or package
-  // compileStep.addJavaScript({
-  //   path: desiredPathName,
-  //   sourcePath: compileStep.inputPath,
-  //   data: compiledTemplates
-  // });
 }
 
 // Register our function to handle Markdown files
