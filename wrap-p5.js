@@ -2,8 +2,8 @@ var esprima = Npm.require('esprima');
 
 
 var wrapP5 = function (compileStep) {
-  // get file contents
-  var fileContents = compileStep.read().toString('utf8');
+    // get file contents
+    var fileContents = compileStep.read().toString('utf8');
 
     var lines = fileContents.split('\n');
     var output = []
@@ -23,7 +23,6 @@ var wrapP5 = function (compileStep) {
                         token.value = 'p.'+token.value
                     }
                 }
-                //console.log(token.value);
             }
             tokenOutput.push(token.value);
         });
@@ -39,9 +38,7 @@ var wrapP5 = function (compileStep) {
 
 }
 
-// Register our function to handle Markdown files
-Plugin.registerSourceHandler("p5",
-  {isTemplate: true, archMatching: 'web'}, wrapP5);
+Plugin.registerSourceHandler("p5", {isTemplate: true, archMatching: 'web'}, wrapP5);
 
 
 var keywords = [
