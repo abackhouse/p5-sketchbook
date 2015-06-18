@@ -1,0 +1,295 @@
+var esprima = Npm.require('esprima');
+
+
+var wrapP5 = function (compileStep) {
+  // get file contents
+  var fileContents = compileStep.read().toString('utf8');
+
+  // ... do the compilation using a markdown library
+  // ... generate JS code with Blaze
+    // ... generate a path for the new JS file from compileStep.inputPath
+
+    var lines = fileContents.split('\n');
+    var output = []
+    lines.forEach(function(line) {
+        var tokens = esprima.tokenize(line);
+        var tokenOutput = [];
+        tokens.forEach(function(token, i) {
+            if(token.type ===  "Identifier") {
+                if(keywords.indexOf(token.value+'()') > -1 || keywords.indexOf(token.value) > -1) {
+                    if (token.value === 'draw') {
+                        token.value = 'p.draw = function'
+                        tokenOutput.splice(i-3, 3);
+                    } else if (token.value === 'setup') {
+                        token.value = 'p.setup = function'
+                        tokenOutput.splice(i-3, 3);
+                    } else {
+                        token.value = 'p.'+token.value
+                    }
+                }
+                //console.log(token.value);
+            }
+            tokenOutput.push(token.value);
+        });
+        line = tokenOutput.join(' ');
+        output.push(line);
+    });
+
+    output.unshift('var s = new p5( p ) {');
+    output.push('}');
+    var code = output.join('\n');
+   
+    console.log(code);
+
+    
+
+  // add newly compiled JavaScript code to the app or package
+  // compileStep.addJavaScript({
+  //   path: desiredPathName,
+  //   sourcePath: compileStep.inputPath,
+  //   data: compiledTemplates
+  // });
+}
+
+// Register our function to handle Markdown files
+Plugin.registerSourceHandler("p5",
+  {isTemplate: true, archMatching: 'web'}, wrapP5);
+
+
+var keywords = [
+'blue()',
+'brightness()',
+'color()',
+'green()',
+'hue()',
+'lerpColor()',
+'lightness()',
+'red()',
+'saturation()',
+'background()',
+'clear()',
+'colorMode()',
+'fill()',
+'noFill()',
+'noStroke()',
+'stroke()',
+'arc()',
+'ellipse()',
+'line()',
+'point()',
+'quad()',
+'rect()',
+'triangle()',
+'ellipseMode()',
+'noSmooth()',
+'rectMode()',
+'smooth()',
+'strokeCap()',
+'strokeJoin()',
+'strokeWeight()',
+'bezier()',
+'bezierPoint()',
+'bezierTangent()',
+'curve()',
+'curveTightness()',
+'curvePoint()',
+'curveTangent()',
+'beginContour()',
+'beginShape()',
+'bezierVertex()',
+'curveVertex()',
+'endContour()',
+'endShape()',
+'quadraticVertex()',
+'vertex()',
+'HALF_PI',
+'PI',
+'QUARTER_PI',
+'TAU',
+'TWO_PI',
+'preload()',
+'setup()',
+'draw()',
+'remove()',
+'noLoop()',
+'loop()',
+'push()',
+'pop()',
+'redraw()',
+'print()',
+'frameCount',
+'focused',
+'cursor()',
+'frameRate()',
+'noCursor()',
+'displayWidth',
+'displayHeight',
+'windowWidth',
+'windowHeight',
+'windowResized',
+'width',
+'height',
+'fullscreen()',
+'devicePixelScaling()',
+'getURL()',
+'getURLPath()',
+'getURLParams()',
+'createCanvas()',
+'resizeCanvas()',
+'noCanvas()',
+'createGraphics()',
+'blendMode()',
+'applyMatrix()',
+'resetMatrix()',
+'rotate()',
+'scale()',
+'shearX()',
+'shearY()',
+'translate()',
+'deviceOrientation',
+'accelerationX',
+'accelerationY',
+'accelerationZ',
+'pAccelerationX',
+'pAccelerationY',
+'pAccelerationZ',
+'setMoveThreshold()',
+'onDeviceMove()',
+'onDeviceTurn()',
+'keyIsPressed',
+'key',
+'keyCode',
+'keyPressed()',
+'keyReleased()',
+'keyTyped()',
+'keyIsDown()',
+'mouseX',
+'mouseY',
+'pmouseX',
+'pmouseY',
+'winMouseX',
+'winMouseY',
+'pwinMouseX',
+'pwinMouseY',
+'mouseButton',
+'mouseIsPressed',
+'mouseMoved()',
+'mouseDragged()',
+'mousePressed()',
+'mouseReleased()',
+'mouseClicked()',
+'mouseWheel()',
+'touchX',
+'touchY',
+'ptouchX',
+'ptouchY',
+'touches[]',
+'touchIsDown',
+'touchStarted()',
+'touchMoved()',
+'touchEnded()',
+'createImage()',
+'saveCanvas()',
+'saveFrames()',
+'loadImage()',
+'image()',
+'tint()',
+'noTint()',
+'imageMode()',
+'pixels[]',
+'blend()',
+'copy()',
+'filter()',
+'get()',
+'loadPixels()',
+'set()',
+'updatePixels()',
+'loadFont()',
+'loadJSON()',
+'loadStrings()',
+'loadTable()',
+'loadXML()',
+'httpGet()',
+'httpPost()',
+'httpDo()',
+'save()',
+'saveJSON()',
+'saveStrings()',
+'saveTable()',
+'createVector()',
+'abs()',
+'ceil()',
+'constrain()',
+'dist()',
+'exp()',
+'floor()',
+'lerp()',
+'log()',
+'mag()',
+'map()',
+'max()',
+'min()',
+'norm()',
+'pow()',
+'round()',
+'sq()',
+'sqrt()',
+'noise()',
+'noiseDetail()',
+'noiseSeed()',
+'randomSeed()',
+'random()',
+'randomGaussian()',
+'acos()',
+'asin()',
+'atan()',
+'atan2()',
+'cos()',
+'sin()',
+'tan()',
+'degrees()',
+'radians()',
+'angleMode()',
+'textAlign()',
+'textLeading()',
+'textSize()',
+'textStyle()',
+'textWidth()',
+'text()',
+'textFont()',
+'append()',
+'arrayCopy()',
+'concat()',
+'reverse()',
+'shorten()',
+'shuffle()',
+'sort()',
+'splice()',
+'subset()',
+'float()',
+'int()',
+'str()',
+'boolean()',
+'byte()',
+'char()',
+'unchar()',
+'hex()',
+'unhex()',
+'join()',
+'match()',
+'matchAll()',
+'nf()',
+'nfc()',
+'nfp()',
+'nfs()',
+'split()',
+'splitTokens()',
+'trim()',
+'day()',
+'hour()',
+'minute()',
+'millis()',
+'month()',
+'second()',
+'year()'
+]
