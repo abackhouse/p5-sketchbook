@@ -8,12 +8,12 @@ Package.describe({
 
 Package.registerBuildPlugin({
   name: "wrapP5",
-  use: [],
+  use: ['spacebars-compiler'],
   sources: [
     'wrap-p5.js'
   ],
     npmDependencies: {
-        esprima: "latest"
+        esprima: "2.3.0"
     }
 });
 
