@@ -8,13 +8,14 @@ Package.describe({
 
 Package.registerBuildPlugin({
   name: "wrapP5",
-  use: ['spacebars-compiler'],
+  use: ['spacebars-compiler', 'underscore'],
   sources: [
     'wrap-p5.js'
   ],
-    npmDependencies: {
-        esprima: "2.3.0"
-    }
+  npmDependencies: {
+    esprima: "2.3.0",
+    "js-beautify": "1.5.7"
+  }
 });
 
 // Npm.depends({
